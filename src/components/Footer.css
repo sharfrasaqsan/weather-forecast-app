@@ -1,0 +1,25 @@
+/* Styling for the footer */
+.footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* Styling for the footer content */
+.footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Styling for the copyright text */
+.footer p {
+  margin: 5px 0;
+}
+
+/* Styling for the attribution text */
+.footer p:last-child {
+  font-size: 14px;
+  opacity: 0.8;
+}

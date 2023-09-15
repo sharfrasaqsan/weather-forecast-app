@@ -1,0 +1,160 @@
+/* Weather.css */
+
+.weather {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.weather h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.weather form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.weather input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.weather button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.weather button:hover {
+  background-color: #0056b3;
+}
+
+.weather h3 {
+  font-size: 28px;
+  color: #333;
+  margin-top: 20px;
+}
+
+.weather p {
+  font-size: 20px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.weather p:first-child {
+  margin-top: 10px;
+}
+
+.weather .weather-info {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Create a grid for the popular cities */
+.city-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-rows: repeat(2, auto); /* 2 rows with auto height */
+  gap: 20px; /* Add spacing between grid items */
+}
+
+/* Style for each city card */
+.city-card {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.weather-forecast {
+  margin-top: 3rem;
+}
+
+/* Styling for city-grid container */
+.city-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-rows: repeat(2, 1fr); /* 2 rows */
+  gap: 20px; /* Gap between city cards */
+  margin: 20px auto; /* Center the grid */
+}
+
+/* Styling for city card (remove background-color) */
+.city-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+/* Styling for city name */
+.city-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Styling for temperature and weather description */
+.city-card p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+/* Styling for weather icons (assuming you're using Font Awesome) */
+.city-card .fa-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #007bff; /* Default color */
+}
+
+/* Media Query for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .weather {
+    padding: 10px;
+  }
+
+  .weather h2 {
+    font-size: 20px;
+  }
+
+  .weather input[type="text"] {
+    font-size: 14px;
+  }
+
+  .weather button {
+    font-size: 16px;
+  }
+
+  .weather h3 {
+    font-size: 18px;
+  }
+
+  .weather p {
+    font-size: 16px;
+  }
+
+  .weather .weather-info {
+    padding: 15px;
+  }
+
+  .city-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for mobile */
+  }
+}
