@@ -8,12 +8,12 @@ import {
   faCloudRain,
   faSnowflake,
 } from "@fortawesome/free-solid-svg-icons";
-import Footer from "./Footer";
 
 const Weather = () => {
   const [location, setLocation] = useState("");
   const [weatherData, setWeatherData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null); // Add error state
 
   const API_KEY = "5bb9ab08e3f4c2b3fde5872d5d7c2572";
 
@@ -31,6 +31,7 @@ const Weather = () => {
 
   const fetchWeatherData = async (city) => {
     setLoading(true);
+    setError(null); // Clear any previous errors
 
     try {
       const response = await fetch(
@@ -45,6 +46,7 @@ const Weather = () => {
       return data;
     } catch (error) {
       console.error(`Error fetching weather data for ${city}:`, error);
+      setError(error.message); // Set the error message in state
       return null;
     } finally {
       setLoading(false);
@@ -54,19 +56,28 @@ const Weather = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!location) {
+      window.alert("Please enter a location");
+      return;
+    }
+
     try {
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&units=metric`
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch weather data");
+        window.alert(
+          "City not found. Please check the city name and try again."
+        );
+        return;
       }
 
       const data = await response.json();
       setWeatherData({ ...weatherData, [location]: data });
     } catch (error) {
-      console.error("Error fetching weather data:", error);
+      // Show the error message in state
+      setError(error.message);
       setWeatherData(null); // Clear weather data on error
     }
   };
@@ -102,15 +113,19 @@ const Weather = () => {
   };
 
   const getBackgroundColor = (temperature) => {
-    if (temperature >= 30) {
-      return "#ff5733"; // Hot (Red)
-    } else if (temperature >= 20) {
-      return "#ffcc33"; // Warm (Yellow)
-    } else if (temperature >= 10) {
-      return "#33ccff"; // Moderate (Blue)
+    let color = "#007bff"; // Default color (blue)
+
+    if (temperature > 30) {
+      color = "#ff5733"; // Hot weather color (red)
+    } else if (temperature > 20) {
+      color = "#ffcc33"; // Warm weather color (yellow)
+    } else if (temperature > 10) {
+      color = "#33ccff"; // Moderate weather color (blue)
     } else {
-      return "#66ff66"; // Cool (Green)
+      color = "#66ff66"; // Cool weather color (green)
     }
+
+    return color;
   };
 
   return (
@@ -151,7 +166,7 @@ const Weather = () => {
 
       {/* Weather Forecast Search */}
       <div className="weather-forecast">
-        <h2>Weather Forecast</h2>
+        <h2>Search your city Weather here</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -162,22 +177,36 @@ const Weather = () => {
           <button type="submit">Get Weather</button>
         </form>
         {weatherData[location] ? (
-          <div>
+          <div
+            className="weather-result"
+            style={{
+              backgroundColor: getBackgroundColor(
+                weatherData[location]?.main.temp
+              ),
+            }}
+          >
             <h3>
               Weather in {weatherData[location].name},{" "}
               {weatherData[location].sys.country}
+              <div className="weather-icon">
+                {selectWeatherIcon(
+                  weatherData[location].main.temp,
+                  weatherData[location].weather[0]?.description
+                )}
+              </div>
             </h3>
-            <p>Temperature: {weatherData[location].main.temp}°C</p>
+            <p>{weatherData[location].main.temp}°C</p>
             <p>
               Weather:{" "}
               {weatherData[location].weather[0]?.description || "Not available"}
             </p>
           </div>
         ) : (
-          <p>Data not available</p>
+          <p></p>
         )}
       </div>
-      <Footer />
+
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };
