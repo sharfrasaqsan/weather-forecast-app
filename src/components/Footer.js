@@ -5,8 +5,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="container">
-        <p>&copy; {new Date().getFullYear()} Your Weather App</p>
-        <p>Designed with ❤️ by Your Name</p>
+        <p>&copy; {new Date().getFullYear()} My City Climate</p>
       </div>
     </footer>
   );

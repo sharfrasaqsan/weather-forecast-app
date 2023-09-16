@@ -232,7 +232,7 @@ const Weather = () => {
 
       {/* Weather Forecast Search */}
       <div className="weather-forecast">
-        <h2>Search your city Weather here</h2>
+        <h2>Search your city here</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
