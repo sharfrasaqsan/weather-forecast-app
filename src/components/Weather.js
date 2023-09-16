@@ -14,6 +14,7 @@ const Weather = () => {
   const [weatherData, setWeatherData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null); // Add error state
+  const [currentTimes, setCurrentTimes] = useState({});
 
   const API_KEY = "5bb9ab08e3f4c2b3fde5872d5d7c2572";
 
@@ -55,25 +56,38 @@ const Weather = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!location) {
       window.alert("Please enter a location");
       return;
     }
-
+  
     try {
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&units=metric`
       );
-
+  
       if (!response.ok) {
         window.alert(
           "City not found. Please check the city name and try again."
         );
         return;
       }
-
+  
       const data = await response.json();
+      
+      // Calculate and set the current time for the entered city
+      const timezone = getTimezoneForCity(location);
+      if (timezone) {
+        const now = new Date().toLocaleTimeString("en-US", {
+          timeZone: timezone,
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        });
+        data.currentTime = now;
+      }
+  
       setWeatherData({ ...weatherData, [location]: data });
     } catch (error) {
       // Show the error message in state
@@ -81,6 +95,7 @@ const Weather = () => {
       setWeatherData(null); // Clear weather data on error
     }
   };
+  
 
   useEffect(() => {
     // Fetch weather data for the popular cities
@@ -128,6 +143,55 @@ const Weather = () => {
     return color;
   };
 
+  // Use useEffect to update the current times for each city
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const times = {};
+      for (const city of popularCities) {
+        const timeZone = getTimezoneForCity(city);
+        if (timeZone) {
+          const timeOptions = {
+            timeZone: timeZone,
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+          };
+          times[city] = new Date().toLocaleString(undefined, timeOptions);
+        } else {
+          times[city] = "Not available";
+        }
+      }
+      setCurrentTimes(times);
+    }, 1000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
+
+  // Function to get the timezone for a city (you can expand this as needed)
+  const getTimezoneForCity = (city) => {
+    switch (city) {
+      case "New York":
+        return "America/New_York";
+      case "London":
+        return "Europe/London";
+      case "Paris":
+        return "Europe/Paris";
+      case "Tokyo":
+        return "Asia/Tokyo";
+      case "Los Angeles":
+        return "America/Los_Angeles";
+      case "Sydney":
+        return "Australia/Sydney";
+      case "Rome":
+        return "Europe/Rome";
+      case "San Francisco":
+        return "America/Los_Angeles";
+      default:
+        return null; // Return null for cities with unknown timezones
+    }
+  };
+
   return (
     <div className="weather">
       <div className="city-grid">
@@ -153,6 +217,8 @@ const Weather = () => {
                     <div>
                       <p>Temperature: {temperature}°C</p>
                       <p>Weather: {weatherDescription || "Not available"}</p>
+                      <br />
+                      <p>Time: {currentTimes[city]}</p>
                     </div>
                   ) : (
                     <p>Data not available</p>
