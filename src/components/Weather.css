@@ -178,3 +178,29 @@
     grid-template-columns: repeat(2, 1fr); /* 2 columns for mobile */
   }
 }
+
+@media (max-width: 480px) {
+  .weather-result {
+    width: 100%;
+  }
+
+  .city-grid {
+    grid-template-columns: repeat(1, 1fr); /* 2 columns for mobile */
+  }
+
+  .city-card {
+    padding: 0;
+  }
+
+  .weather h3 {
+    padding-top: 0;
+  }
+
+  .weather p:last-child {
+    padding-bottom: 1rem;
+  }
+
+  #search-head {
+    padding-top: 1rem;
+  }
+}

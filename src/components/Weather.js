@@ -251,7 +251,7 @@ const Weather = () => {
               ),
             }}
           >
-            <h3>
+            <h3 id="search-head">
               Weather in {weatherData[location].name},{" "}
               {weatherData[location].sys.country}
               <div className="weather-icon">
